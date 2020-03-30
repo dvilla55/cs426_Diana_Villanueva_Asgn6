@@ -1,0 +1,7 @@
+Schedule and deliverable:
+
+	Phase system for the moon -- Thursday (3/26) by 12pm (estimate: 1 hrs)
+	Implement freeing villagers feature -- Thursday (3/26) by 12pm (estimate: 2-3 hrs)
+	Health and Damage system -- Saturday by 12pm (estimate: 3 hrs)
+	Health and Damage system improvements -- Monday by 12pm (estimate: 2 hrs)
+	Code improvement/cleanup -- Wednesday by 10 am (estimate: unknown)
