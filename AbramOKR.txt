@@ -1,0 +1,5 @@
+Fix camera to follow player (3/30) est 2 hours
+adding shooting (3/30) est 1 hour
+Fixed damage script (3/30) est 2 hours
+fixed collision with villager (3/30) 30 minutes
+Go over code before submission (3/31) est 2 hours
