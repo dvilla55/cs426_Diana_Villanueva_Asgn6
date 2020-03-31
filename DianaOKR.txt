@@ -1,0 +1,9 @@
+Schedule and deliverable:
+Basic Movement System -- Wed by 11:59pm (estimate: ??? hrs)
+Enemy Base-- Wed by 11:59pm (estimate: 1 hr)
+Adjustment to Moon Phase System -- Monday by 1pm (estimate: 15 minutes)
+Bullet Despawn Fix -- Monday by 1pm (estimate: 5 minutes)
+Player Rotation -- Tuesday by 6pm (estimate: 1 hour)
+Enemy Rotation -- Tuesday by 6pm (estimate: 2 hours)
+Moon Phase Pips -- Tuesday by 11:59pm (estimate: 1 hour)
+Pio Import -- Tuesday by 11:59pm (estimate: 10 minutes)
