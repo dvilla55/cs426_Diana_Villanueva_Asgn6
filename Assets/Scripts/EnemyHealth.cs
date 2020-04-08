@@ -49,7 +49,7 @@ public class EnemyHealth : MonoBehaviour
         }
         if (currHealth <= 0)
         {
-
+            gameObject.GetComponent<EnemyController>().drop();
             Destroy(gameObject);
         }
         if (currHealth > maxHealth)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FreeVillager : MonoBehaviour
 {
-    bool isFree;
+    public bool isFree;
     float time;
     public Material material;
     Renderer rend;

@@ -18,6 +18,9 @@ public class EnemyController : MonoBehaviour
 
     public bool go = true;
 
+    private Vector3 target1;
+    private Vector3 target2;
+
     [Header("Inventory")]
     public GameObject item;
 
@@ -32,8 +35,9 @@ public class EnemyController : MonoBehaviour
     //Pause
     IEnumerator pause()
     {
+        Debug.Log("Pausing...");
         go = false;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         go = true;
         yield return new WaitForSeconds(0);
     }
@@ -43,19 +47,37 @@ public class EnemyController : MonoBehaviour
         if(last != direction)
         {
             StartCoroutine(pause());
+            last = direction;
+            forward = !forward;
         }
     }
 
     //Loot dropping
     public void drop()
     {
-        Instantiate(item, transform.position, transform.rotation);
+        if(item != null)
+        {
+            Instantiate(item, transform.position, transform.rotation);
+        }
+    }
+
+    public void updateTargets()
+    {
+        target1 = prevNode.transform.position;
+        target1.y = transform.position.y;
+
+        target2 = nextNode.transform.position;
+        target2.y = transform.position.y;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        target1 = prevNode.transform.position;
+        target1.y = transform.position.y;
+
+        target2 = nextNode.transform.position;
+        target2.y = transform.position.y;
     }
 
     // Update is called once per frame
@@ -82,11 +104,11 @@ public class EnemyController : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * rayDist, Color.white);
             if(direction == 0)
             {
-                moveDirection = Vector3.MoveTowards(moveDirection, nextNode.transform.position, speed * Time.deltaTime);
+                moveDirection = Vector3.MoveTowards(moveDirection, target2, speed * Time.deltaTime);
             }
             else
             {
-                moveDirection = Vector3.MoveTowards(moveDirection, prevNode.transform.position, speed * Time.deltaTime);
+                moveDirection = Vector3.MoveTowards(moveDirection, target1, speed * Time.deltaTime);
             }
             //Debug.Log("Did not Hit");
         }

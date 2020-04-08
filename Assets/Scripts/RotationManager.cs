@@ -98,12 +98,14 @@ public class RotationManager : MonoBehaviour
                 other.gameObject.GetComponent<EnemyController>().prevNode = gameObject;
                 other.gameObject.GetComponent<EnemyController>().nextNode = next;
                 other.gameObject.GetComponent<EnemyController>().rotMult = 1;
+                other.gameObject.GetComponent<EnemyController>().updateTargets();
             }
             else
             {
                 other.gameObject.GetComponent<EnemyController>().prevNode = prev;
                 other.gameObject.GetComponent<EnemyController>().nextNode = gameObject;
                 other.gameObject.GetComponent<EnemyController>().rotMult = -1;
+                other.gameObject.GetComponent<EnemyController>().updateTargets();
             }
             other.transform.rotation = other.transform.rotation * Quaternion.Euler(0, 30 * targetMain.rotMult, 0);
         }

@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     public Rigidbody rb;
     public bool OnGround;
+    public bool barrier;
     public LayerMask groundLayer;
     public float detectLength;
     public float jump;
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
         reload = moveDirection.y;
 
-        if(Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
             forward = false;
             anim.SetBool("Forward", forward);
@@ -67,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
             target.y = transform.position.y;
             moveDirection = Vector3.MoveTowards(moveDirection, target, speed * Time.deltaTime);
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             forward = true;
             anim.SetBool("Forward", forward);
