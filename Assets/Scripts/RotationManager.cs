@@ -135,7 +135,6 @@ public class RotationManager : MonoBehaviour
 
                 other.gameObject.GetComponent<PlayerMovement>().gate = number;
                 other.transform.rotation = other.transform.rotation * Quaternion.Euler(0, 30 * targetMain.rotMult, 0);
-                other.gameObject.GetComponent<PlayerMovement>().runRoutine();
             }
         }
     }

@@ -29,51 +29,22 @@ public class PlayerMovement : MonoBehaviour
     public int gate;
 
     [SerializeField] private GameObject body;
+    private Animator anim;
 
     [Header("Collision Data")]
     public float FRay;
-
-    [Header("Rotation Data")]
-    public float turnSpeed;
-    private int turnChange = -180;
-    private Vector3 turnTarget = new Vector3(0, 0, 0);
-    private IEnumerator currentAction;
 
 
     [Header("Path Data")]
     public GameObject prevNode;
     public GameObject nextNode;
 
-    //Coroutines
-    IEnumerator Rotation(Vector3 turnTarget)
-    {
-        Quaternion turn = Quaternion.Euler(turnTarget) * transform.rotation;
-
-        while (body.transform.rotation != turn)
-        {
-            body.transform.rotation = Quaternion.RotateTowards(body.transform.rotation, turn, turnSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
-
-    public void runRoutine()
-    {
-        if (currentAction != null)
-        {
-            StopCoroutine(currentAction);
-        }
-
-        turnTarget.y = turnTarget.y + turnChange;
-        turnChange = -turnChange;
-
-        currentAction = Rotation(turnTarget);
-        StartCoroutine(currentAction);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
         ctrl = GetComponent<CharacterController>();
+        anim = body.GetComponent<Animator>();
+        anim.SetBool("Forward", forward);
     }
 
     // Update is called once per frame
@@ -90,22 +61,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKey(KeyCode.A))
         {
-            if(forward)
-            {
-                runRoutine();
-            }
             forward = false;
+            anim.SetBool("Forward", forward);
             target = prevNode.transform.position;
             target.y = transform.position.y;
             moveDirection = Vector3.MoveTowards(moveDirection, target, speed * Time.deltaTime);
         }
         else if(Input.GetKey(KeyCode.D))
         {
-            if (!forward)
-            {
-                runRoutine();
-            }
             forward = true;
+            anim.SetBool("Forward", forward);
             target = nextNode.transform.position;
             target.y = transform.position.y;
             moveDirection = Vector3.MoveTowards(moveDirection, target, speed * Time.deltaTime);
@@ -125,11 +90,6 @@ public class PlayerMovement : MonoBehaviour
                 instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, -100f));
 
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-   
     }
 
     void Jump()
