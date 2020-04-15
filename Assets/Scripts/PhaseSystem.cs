@@ -12,6 +12,8 @@ public class PhaseSystem : MonoBehaviour
     bool hasFullMoonOccured = false;
     public float phaseTime;
     public Text phase;
+    public Animator anim;
+    public Animator moon;
 
     IEnumerator phaseTimer()
     {
@@ -51,15 +53,23 @@ public class PhaseSystem : MonoBehaviour
         {
             case 0:
                 phase.text = "Current Phase: New Moon";
+                anim.SetInteger("phase", currPhase);
+                moon.SetInteger("phase", currPhase);
                 break;
             case 1:
                 phase.text = "Current Phase: Crescent Moon";
+                anim.SetInteger("phase", currPhase);
+                moon.SetInteger("phase", currPhase);
                 break;
             case 2:
                 phase.text = "Current Phase: Half Moon";
+                anim.SetInteger("phase", currPhase);
+                moon.SetInteger("phase", currPhase);
                 break;
             case 3:
                 phase.text = "Current Phase: Full Moon";
+                anim.SetInteger("phase", currPhase);
+                moon.SetInteger("phase", currPhase);
                 break;
         }
         return;
