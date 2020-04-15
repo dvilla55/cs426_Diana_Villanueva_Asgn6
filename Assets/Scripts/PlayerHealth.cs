@@ -84,6 +84,7 @@ public class PlayerHealth : MonoBehaviour
             if (life < 0)
             {
                 //respawn();
+                isDead = true;
                 gameRef.EndGame();
             }
             else

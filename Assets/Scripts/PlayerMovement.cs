@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource sfx;
     [SerializeField] float time;
     bool walking = false;
+    public PlayerHealth health;
 
     private Vector3 moveDirection;
     private float reload;
@@ -43,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("VFX")]
     public ParticleSystem run;
     public ParticleSystem launch;
+    public GameObject weapon;
 
     [Header("Collision Data")]
     public float FRay;
@@ -79,12 +81,25 @@ public class PlayerMovement : MonoBehaviour
         sound = steps();
         ctrl = GetComponent<CharacterController>();
         anim = body.GetComponent<Animator>();
+        health = GetComponent<PlayerHealth>();
         anim.SetBool("Forward", forward);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(health.isDead)
+        {
+            motion.SetBool("DEAD", true);
+            weapon.AddComponent<Rigidbody>();
+            Rigidbody t = weapon.GetComponent<Rigidbody>();
+            t.isKinematic = false;
+            t.useGravity = true;
+            t.mass = 1;
+
+            Destroy(this);
+        }
+
         OnGround = Physics.Raycast(transform.position, Vector3.down, detectLength, groundLayer);
         moveDirection = transform.position;
 
@@ -226,4 +241,5 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawRay(body.transform.position, body.transform.forward * FRay);
         Gizmos.DrawRay(transform.position, Vector3.down * detectLength);
     }
+
 }

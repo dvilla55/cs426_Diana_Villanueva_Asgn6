@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
             if (!gameOverUI.gameObject.activeInHierarchy)
             {
                 gameOverUI.gameObject.SetActive(true);
+                gameOverUI.GetComponent<Animator>().enabled = true;
             }
             else
             {
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
             }
 
             AudioListener.pause = true;
-            Time.timeScale = 0;
+            //Time.timeScale = 0;
         }
     }
 
