@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isOpen
+    m_ConditionEvent: open
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4417151893761524470}
@@ -61,7 +61,7 @@ AnimatorController:
   m_Name: Jail Bars 1
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isOpen
+  - m_Name: open
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0

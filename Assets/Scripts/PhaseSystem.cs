@@ -15,6 +15,8 @@ public class PhaseSystem : MonoBehaviour
     public Animator anim;
     public Animator moon;
 
+    public AudioSource sound;
+
     IEnumerator phaseTimer()
     {
         while(true)
@@ -49,6 +51,7 @@ public class PhaseSystem : MonoBehaviour
 
         //Note: We visit the crescent & half moon phases twice and have two possible phases from them
 
+        sound.Play();
         switch (currPhase)
         {
             case 0:

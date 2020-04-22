@@ -67,6 +67,7 @@ public class InventoryManager : MonoBehaviour
             {
                 inventory[i] = -1;
                 slots[i].color = ab;
+                slots[currPoc].sprite = null;
                 found = true;
             }
         }

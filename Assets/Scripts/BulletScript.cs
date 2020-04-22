@@ -18,9 +18,4 @@ public class BulletScript : MonoBehaviour
         StartCoroutine(despawn());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

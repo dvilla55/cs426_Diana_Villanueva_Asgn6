@@ -56,15 +56,18 @@ public class PlayerHealth : MonoBehaviour
   
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag=="Enemy"&&immunedTime<=0)
+        if(collision.GetContact(0).otherCollider.gameObject.tag != "Slash")
         {
-            print("hit player from playerhealth");
-            damagePlayer();
-        }
-        else if(collision.gameObject.tag == "trap" && immunedTime <= 0)
-        {
-            print("hit player from playerhealth");
-            damagePlayer();
+            if (collision.gameObject.tag == "Enemy" && immunedTime <= 0)
+            {
+                print("hit player from playerhealth");
+                damagePlayer();
+            }
+            else if (collision.gameObject.tag == "trap" && immunedTime <= 0)
+            {
+                print("hit player from playerhealth");
+                damagePlayer();
+            }
         }
     }
     private void OnCollisionExit(Collision collision)

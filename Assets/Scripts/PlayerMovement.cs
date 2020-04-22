@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     public TargetMain targets;
     public AudioSource sfx;
     [SerializeField] float time;
+    [SerializeField] GameObject spawn;
     bool walking = false;
     public PlayerHealth health;
     public Slider scale;
@@ -91,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        swing.SetBool("swing", false);
 
         if (health.isDead)
         {
@@ -194,12 +196,13 @@ public class PlayerMovement : MonoBehaviour
 
         //Update position
         moveDirection.y = reload;
-        transform.position = moveDirection;
+        //transform.position = moveDirection;
+        rb.MovePosition(moveDirection);
 
         //Bullet Functions
         if (Input.GetButtonDown("Fire1"))
         {
-            Rigidbody instantiatedProjectile = Instantiate(Projectile, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation) as Rigidbody;
+            Rigidbody instantiatedProjectile = Instantiate(Projectile, new Vector3(spawn.transform.position.x, spawn.transform.position.y, spawn.transform.position.z), transform.rotation) as Rigidbody;
             Physics.IgnoreCollision(instantiatedProjectile.GetComponent<Collider>(), GetComponent<Collider>());
 
             if (scale.value > 0)

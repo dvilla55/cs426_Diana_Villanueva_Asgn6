@@ -7,7 +7,7 @@ public class SmoothCamera : MonoBehaviour
     public GameObject target;
     //public Vector3 offset;
     //public Vector3 rotOff;
-    public double maxY;
+    public float maxY;
     public float smoothSpeed = 0.1f;
 
     public int gateNum;

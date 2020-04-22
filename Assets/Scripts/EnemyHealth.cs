@@ -10,7 +10,7 @@ public class EnemyHealth : MonoBehaviour
     public float maxHealth;
     public Slider slider;
     public GameObject healthBarUI;
-    Damage dmgTaken;
+    public Damage dmgTaken;
 
 
     [SerializeField] private GameObject body;
@@ -67,9 +67,20 @@ public class EnemyHealth : MonoBehaviour
     {    
       if(collision.gameObject.tag=="bullet")
       {
-          damageTaken(30);
+            Debug.Log("Bullet!!");
+            damageTaken(dmgTaken.takeDamage());
+            Debug.Log(dmgTaken.takeDamage());
 
       }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Slash")
+        {
+            Debug.Log("Ka-Shaan!!");
+            damageTaken(10f);
+        }
     }
 
     public void damageTaken(float damage)
