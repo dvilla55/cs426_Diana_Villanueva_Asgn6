@@ -1,6 +1,16 @@
 # Project_151
 Project 151 with Abram, Latrell, and Diana
 
+Assignment 9 update:
+- Shaders
+  - Added wooden textures with normal mapping to tower and floor
+  - Applied Post Processing effects to give a visual accent to the level
+  - Applied bloom 'noise' with custom 'noise' texture, tinted pink to contrast the level's overall blue lighting
+
+- Alpha Feedback
+  - Gave more power to jump in response to reports of feeling as if the jump would not make it on multiple occasions
+  - Added area to introduce power ups in response to not being able to distinguish power ups from enemies
+  - Added controls screen on menu in response to not being aware of what the controls were in alpha testing along with control functions.
 
 Assignment 8 update:
 - Sounds

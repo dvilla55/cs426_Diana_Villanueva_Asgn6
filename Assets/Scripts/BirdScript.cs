@@ -37,18 +37,18 @@ public class BirdScript : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y + 3f * Time.deltaTime * direction, transform.position.z);
 
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            Physics.IgnoreCollision(other, GetComponent<Collider>());
-        }
-    }
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.tag == "Player")
+    //    {
+    //        Physics.IgnoreCollision(other, GetComponent<Collider>());
+    //    }
+    //}
+    //void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player")
+    //    {
+    //        Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+    //    }
+    //}
 }

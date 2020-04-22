@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float time;
     bool walking = false;
     public PlayerHealth health;
+    public Slider scale;
 
     private Vector3 moveDirection;
     private float reload;
@@ -40,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     public Animator motion;
     public Animator shell;
+    public Animator swing;
 
     [Header("VFX")]
     public ParticleSystem run;
@@ -88,7 +91,8 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(health.isDead)
+
+        if (health.isDead)
         {
             motion.SetBool("DEAD", true);
             weapon.AddComponent<Rigidbody>();
@@ -115,32 +119,6 @@ public class PlayerMovement : MonoBehaviour
             motion.SetInteger("speed", 5);
         }
 
-        //On Ground, Jump, and Gravity
-        if(OnGround)
-        {
-            canJump = true;
-            shell.SetBool("grounded", true);
-            shell.SetBool("canJump", true);
-
-            rb.useGravity = false;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                Jump();
-                shell.SetBool("grounded", false);
-            }
-        }
-        else
-        {
-            if (Input.GetButtonDown("Jump") && canJump)
-            {
-                canJump = false;
-                shell.SetBool("canJump", false);
-                Jump();
-            }
-            Vector3 phys = gravity * fallMult * Vector3.down;
-            rb.AddForce(phys, ForceMode.Acceleration);
-        }
         reload = moveDirection.y;
 
         //Moving left and right
@@ -202,6 +180,10 @@ public class PlayerMovement : MonoBehaviour
                 run.enableEmission = false;
             }
         }
+        //else if (Input.GetKey(KeyCode.L))
+        //{
+        //    rb.AddForce(body.transform.forward * 25, ForceMode.Force);
+        //}
         else
         {
             motion.SetInteger("speed", 0);
@@ -215,16 +197,67 @@ public class PlayerMovement : MonoBehaviour
         transform.position = moveDirection;
 
         //Bullet Functions
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            Rigidbody instantiatedProjectile = Instantiate(Projectile, new Vector3(transform.position.x,transform.position.y,transform.position.z), transform.rotation) as Rigidbody;
+            Rigidbody instantiatedProjectile = Instantiate(Projectile, new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation) as Rigidbody;
             Physics.IgnoreCollision(instantiatedProjectile.GetComponent<Collider>(), GetComponent<Collider>());
 
-            if(forward)
-            instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, 100f));
-            else
-                instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, -100f));
+            if (scale.value > 0)
+            {
+                instantiatedProjectile.GetComponent<Light>().color = new Color(1f, 0.8053272f, 0.3915094f);
+                instantiatedProjectile.transform.GetChild(1).GetComponent<ParticleSystem>().startColor = new Color(1f, 0.8053272f, 0.3915094f);
+            }
+            else if (scale.value < 0)
+            {
+                instantiatedProjectile.GetComponent<Light>().color = new Color(0.7013627f, 0.2923638f, 0.8490566f);
+                instantiatedProjectile.transform.GetChild(1).GetComponent<ParticleSystem>().startColor = new Color(0.7013627f, 0.2923638f, 0.8490566f);
+            }
 
+            //if(forward)
+            //instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, 100f));
+            //else
+            //    instantiatedProjectile.velocity = transform.TransformDirection(new Vector3(0, 0, -100f));
+
+            WaypointRead read = instantiatedProjectile.gameObject.GetComponent<WaypointRead>();
+            read.forward = forward;
+            read.nextNode = nextNode;
+            read.prevNode = prevNode;
+
+        }
+
+        if(Input.GetButtonDown("Fire2"))
+        {
+            swing.SetBool("swing", true);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //On Ground, Jump, and Gravity
+        if (OnGround)
+        {
+            canJump = true;
+            shell.SetBool("grounded", true);
+            shell.SetBool("canJump", true);
+
+            rb.useGravity = false;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump();
+                shell.SetBool("grounded", false);
+            }
+        }
+        else
+        {
+            if (Input.GetButtonDown("Jump") && canJump)
+            {
+                canJump = false;
+                shell.SetBool("canJump", false);
+                Jump();
+            }
+            Vector3 phys = gravity * fallMult * Vector3.down;
+            rb.AddForce(phys, ForceMode.Acceleration);
         }
     }
 

@@ -76,6 +76,7 @@ public class RotationManager : MonoBehaviour
             }
             other.transform.rotation = other.transform.rotation * Quaternion.Euler(0, 30 * targetMain.rotMult, 0);
         }
+       
     }
 
     private void OnTriggerEnter(Collider other)
@@ -130,7 +131,18 @@ public class RotationManager : MonoBehaviour
         }
        else
         {
-            Debug.Log("Hit something!");
+            WaypointRead node = other.gameObject.GetComponent<WaypointRead>();
+
+            if (node != null && node.forward)
+            {
+                other.gameObject.GetComponent<WaypointRead>().prevNode = gameObject;
+                other.gameObject.GetComponent<WaypointRead>().nextNode = next;
+            }
+            else if (node != null)
+            {
+                other.gameObject.GetComponent<WaypointRead>().prevNode = prev;
+                other.gameObject.GetComponent<WaypointRead>().nextNode = gameObject;
+            }
         }
     }
 
