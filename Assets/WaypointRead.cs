@@ -34,12 +34,18 @@ public class WaypointRead : MonoBehaviour
             target = nextNode.transform.position;
             target.y = transform.position.y;
             moveDirection = Vector3.MoveTowards(moveDirection, target, speed * Time.deltaTime);
+            Vector3 look = nextNode.transform.position;
+            look.y = transform.position.y;
+            transform.LookAt(look);
         }
         else
         {
             target = prevNode.transform.position;
             target.y = transform.position.y;
             moveDirection = Vector3.MoveTowards(moveDirection, target, speed * Time.deltaTime);
+            Vector3 look = prevNode.transform.position;
+            look.y = transform.position.y;
+            transform.LookAt(look);
         }
 
         moveDirection.y = reload;

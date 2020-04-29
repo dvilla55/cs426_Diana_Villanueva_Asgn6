@@ -110,7 +110,7 @@ public class RotationManager : MonoBehaviour
             other.transform.rotation = other.transform.rotation * Quaternion.Euler(0, 30 * targetMain.rotMult, 0);
         }
 
-        else if (other.gameObject.tag == "Enemy")
+        else if (other.gameObject.tag == "Enemy" && other.gameObject.GetComponent<WaypointRead>() == null)
         {
             Debug.Log("Got Enemy!");
             if (other.gameObject.GetComponent<EnemyController>().forward)

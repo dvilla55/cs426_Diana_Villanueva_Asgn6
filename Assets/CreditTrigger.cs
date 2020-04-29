@@ -8,13 +8,9 @@ public class CreditTrigger : MonoBehaviour
 {
     public GameObject credits;
 
-    private void OnTriggerEnter(Collider other)
+    public void doCred()
     {
-        if(other.gameObject.tag == "Player")
-        {
-            credits.SetActive(true);
-            AudioListener.pause = true;
-            Destroy(other.gameObject);
-        }
+        credits.SetActive(true);
+        AudioListener.pause = true;
     }
 }

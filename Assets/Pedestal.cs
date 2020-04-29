@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Pedestal : MonoBehaviour
 {
     public AudioSource sound;
-    public RawImage img;
+    public GameObject hint;
     public float fadeAmnt;
     public int add;
 
@@ -26,29 +26,40 @@ public class Pedestal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(fade != null)
+        if(other.gameObject.tag == "Player")
         {
-            StopCoroutine(fade);
+            if (fade != null)
+            {
+                StopCoroutine(fade);
+            }
+            hint.active = true;
+            fade = inOut(1f, fadeAmnt);
+            StartCoroutine(fade);
         }
-        fade = inOut(1f, fadeAmnt);
-        StartCoroutine(fade);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (fade != null)
+        if (other.gameObject.tag == "Player")
         {
-            StopCoroutine(fade);
+            if (fade != null)
+            {
+                StopCoroutine(fade);
+            }
+            hint.active = false;
+            fade = inOut(-1f, fadeAmnt);
+            StartCoroutine(fade);
         }
-        fade = inOut(1f, -fadeAmnt);
-        StartCoroutine(fade);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if(Input.GetButtonDown("Fire1"))
+        if(other.gameObject.tag == "Player")
         {
-            scale.value = add;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                scale.value = add;
+            }
         }
     }
 }

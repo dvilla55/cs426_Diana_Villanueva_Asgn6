@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     bool walking = false;
     public PlayerHealth health;
     public Slider scale;
+    public bool doMove = true;
 
     private Vector3 moveDirection;
     private float reload;
@@ -58,6 +59,10 @@ public class PlayerMovement : MonoBehaviour
     public GameObject prevNode;
     public GameObject nextNode;
 
+    [Header("Firing Data")]
+    bool firstSet = false;
+    int down = 1;
+
     IEnumerator sound;
 
     public IEnumerator steps()
@@ -72,16 +77,30 @@ public class PlayerMovement : MonoBehaviour
             {
                 time = stepTime / 3f;
             }
-            sfx.pitch = Random.Range(0.9f, 1.1f);
+            sfx.pitch = Random.Range(1.1f, 1.3f);
             sfx.Play();
 
             yield return new WaitForSeconds(time);
         }
     }
 
+    IEnumerator coolDown()
+    {
+        while(true)
+        {
+            if(down != 0)
+            {
+                down--;
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(coolDown());
         sound = steps();
         ctrl = GetComponent<CharacterController>();
         anim = body.GetComponent<Animator>();
@@ -94,9 +113,16 @@ public class PlayerMovement : MonoBehaviour
     {
         swing.SetBool("swing", false);
 
+
+        if(!firstSet && scale.value != 0)
+        {
+            firstSet = true;
+        }
+
         if (health.isDead)
         {
             motion.SetBool("DEAD", true);
+            rb.useGravity = true;
             weapon.AddComponent<Rigidbody>();
             Rigidbody t = weapon.GetComponent<Rigidbody>();
             t.isKinematic = false;
@@ -110,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = transform.position;
 
         //Run when hold left shift
-        if(Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
             speed = 10f;
             motion.SetInteger("speed", 10);
@@ -144,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
                 walking = false;
             }
 
-            if(speed == 10 && OnGround)
+            if (speed == 10 && OnGround)
             {
                 run.enableEmission = true;
             }
@@ -167,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
                 StartCoroutine(sound);
                 walking = true;
             }
-            else if(!OnGround)
+            else if (!OnGround)
             {
                 StopCoroutine(sound);
                 walking = false;
@@ -194,14 +220,45 @@ public class PlayerMovement : MonoBehaviour
             walking = false;
         }
 
-        //Update position
-        moveDirection.y = reload;
-        //transform.position = moveDirection;
-        rb.MovePosition(moveDirection);
+        if(doMove)
+        {
+            //Update position
+            moveDirection.y = reload;
+            //transform.position = moveDirection;
+            rb.MovePosition(moveDirection);
+        }
+
+        //On Ground, Jump, and Gravity
+        if (OnGround)
+        {
+            canJump = true;
+            shell.SetBool("grounded", true);
+            shell.SetBool("canJump", true);
+
+            rb.useGravity = false;
+
+            if (Input.GetButtonDown("Jump"))
+            {
+                Jump();
+                shell.SetBool("grounded", false);
+            }
+        }
+        else
+        {
+            if (Input.GetButtonDown("Jump") && canJump)
+            {
+                canJump = false;
+                shell.SetBool("canJump", false);
+                Jump();
+            }
+            Vector3 phys = gravity * fallMult * Vector3.down;
+            rb.AddForce(phys, ForceMode.Acceleration);
+        }
 
         //Bullet Functions
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && firstSet && down == 0)
         {
+            down = 1;
             Rigidbody instantiatedProjectile = Instantiate(Projectile, new Vector3(spawn.transform.position.x, spawn.transform.position.y, spawn.transform.position.z), transform.rotation) as Rigidbody;
             Physics.IgnoreCollision(instantiatedProjectile.GetComponent<Collider>(), GetComponent<Collider>());
 
@@ -236,39 +293,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //On Ground, Jump, and Gravity
-        if (OnGround)
-        {
-            canJump = true;
-            shell.SetBool("grounded", true);
-            shell.SetBool("canJump", true);
 
-            rb.useGravity = false;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                Jump();
-                shell.SetBool("grounded", false);
-            }
-        }
-        else
-        {
-            if (Input.GetButtonDown("Jump") && canJump)
-            {
-                canJump = false;
-                shell.SetBool("canJump", false);
-                Jump();
-            }
-            Vector3 phys = gravity * fallMult * Vector3.down;
-            rb.AddForce(phys, ForceMode.Acceleration);
-        }
+        
     }
 
     void Jump()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
-        launch.Play();
+        if(doMove)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(Vector3.up * jump, ForceMode.Impulse);
+            launch.Play();
+        }
     }
 
     private void OnDrawGizmos()

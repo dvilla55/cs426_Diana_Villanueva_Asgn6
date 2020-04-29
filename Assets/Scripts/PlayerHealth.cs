@@ -70,11 +70,21 @@ public class PlayerHealth : MonoBehaviour
             }
         }
     }
+
     private void OnCollisionExit(Collision collision)
     {
         Debug.Log("Collision Exit!");
         Debug.Log(collision.gameObject.name);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Enemy" && immunedTime <= 0)
+        {
+            print("hit player from playerhealth");
+            damagePlayer();
+        }
     }
     public void damagePlayer()
     {

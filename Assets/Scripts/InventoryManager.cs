@@ -39,15 +39,17 @@ public class InventoryManager : MonoBehaviour
         switch (type)
         {
             case 0:
+                //slots[currPoc].sprite = Resources.Load<Sprite>("Sprites/bluekeyimage");
                 slots[currPoc].color = new Color(255f, 0f, 0f);
                 break;
             case 1:
+                //slots[currPoc].sprite = Resources.Load<Sprite>("Sprites/bluekeyimage");
                 slots[currPoc].color = new Color(0f, 255f, 0f);
                 break;
             case 2:
                
-                slots[currPoc].sprite = Resources.Load<Sprite>("Sprites/bluekeyimage");
-                slots[currPoc].color = new Color(37, 255, 255);
+                //slots[currPoc].sprite = Resources.Load<Sprite>("Sprites/bluekeyimage");
+                slots[currPoc].color = new Color(0f, 0f, 255f);
 
                 break;
             default:
